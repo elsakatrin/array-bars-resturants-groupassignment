@@ -1,5 +1,5 @@
 
-const next = bars.filter((bar=>{ //Filter for the array bars
+const nextHh = bars.filter((bar=>{ //Filter for the array bars
     const d = new Date(); 
     const day = d.getDay(); //finding what day it is today
     if(bar.days == "Every weekday"){
@@ -21,7 +21,6 @@ const next = bars.filter((bar=>{ //Filter for the array bars
     return( hour < to && hour > from ) //if time is more than to(start) and less than form (end time) the places that fall under that appear
     
 }))
-console.log(next)
 
 
 //Days in numbers to catagorize 
@@ -32,6 +31,38 @@ const days= {
     wednesday: 3,
     thursday: 4,
     friday: 5,
-    saturday: 6 ,
+    saturday: 6,
 }
 console.log(days[offer[0].day])
+
+
+
+//For the offer page 
+//Show special offers that are today and then the next days 
+const getDaysToOffer =(daysArray, today)=>{ 
+
+    let daysToOffer = 15
+
+    daysArray.forEach(day=>{ 
+        let dayNr=days[day] 
+ 
+        if(dayNr < today){
+         dayNr += 7 //I used += 7 because we have 7 days - it's there so the days 'loop' back around from 6(saturday) to 0(Sunday)
+        }
+ 
+        if (dayNr - today < daysToOffer){
+         daysToOffer = dayNr - today 
+        }
+     } )
+     return daysToOffer 
+}
+
+
+offer.sort (function(a,b) {
+    const d = new Date();
+    const today = d.getDay();
+    let daysToA = getDaysToOffer(a.day, today)
+    let daysToB = getDaysToOffer(b.day, today)
+
+    return(daysToA - daysToB)
+})
